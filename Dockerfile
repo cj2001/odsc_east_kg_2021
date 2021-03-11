@@ -6,4 +6,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 ENV JUPYTER_ENABLE_LAB=yes
 
-ENTRYPOINT ["jupyter", "lab", "--ip=0.0.0.0", "--allow-root"]
+COPY . /notebooks
+WORKDIR /notebooks
+
+CMD ["jupyter", "lab", "--ip=0.0.0.0", "--port=8888", "--no-browser", "--notebook-dir=/notebooks", "--allow-root"]
