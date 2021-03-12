@@ -12,7 +12,7 @@ In addition to cloning this repository, participants in this workshop will need 
 
 - All data will be accessed through public APIs and open source packages.  These packages will be provided via Docker and/or venv.
 
-- All software will be provided and configured through the Docker container.  This includes Jupyter lab, a variety of Python packages (particularly `spacy`, `wikipedia`, and the Python Neo4j driver), and the Neo4j browser.
+- All software will be provided and configured through the Docker container.  This includes Jupyter lab, a variety of Python packages (particularly `spacy`, `wikipedia`, and the Python `neo4j` driver), and the Neo4j browser.
 
 - We will be working with the Google Knowledge Graph API.  Users are permitted 100,000 calls per day for free to the API, but will require an API key for the API calls.  A link on how to create this API key is below.  Once the key is created, it is recommended that you store in in a file named `.api_key` at the root level of this repo.
 
@@ -24,7 +24,9 @@ In addition to cloning this repository, participants in this workshop will need 
   - [How to Create a Google Knowledge Graph Search API Key](https://developers.google.com/knowledge-graph/prereqs)
 - [Neo4j](https://neo4j.com)
   - [Awesome Procedures on Cypher (APOC)](https://neo4j.com/labs/apoc/)
+  - [Cypher Manual](https://neo4j.com/docs/cypher-manual/current/)
   - [Graph Data Science (GDS) Library](https://neo4j.com/developer/graph-data-science/)
-- [Python Wikipedia package docs](https://wikipedia.readthedocs.io/en/latest/)
+  - [Python Driver API Docs](https://neo4j.com/docs/api/python-driver/current/)
 - [spacy Documentation](https://spacy.io/)
+- [Wikipedia package docs](https://wikipedia.readthedocs.io/en/latest/)
 
