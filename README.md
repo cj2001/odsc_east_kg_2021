@@ -4,7 +4,7 @@
 #### email: clair.sullivan@neo4j.com
 #### Twitter: @CJLovesData1
 
-This repository contains all of the software you will need to follow along with this workshop.  It is mostly contained within the Docker container to ensure reproducibility among a variety of operating systems and environments.  
+This repository contains all of the software you will need to follow along with this workshop (see abstract below).  It is mostly contained within the Docker container to ensure reproducibility among a variety of operating systems and environments.  
 
 ## Downloadable prerequisites
 
@@ -29,4 +29,11 @@ In addition to cloning this repository, participants in this workshop will need 
   - [Python Driver API Docs](https://neo4j.com/docs/api/python-driver/current/)
 - [spacy Documentation](https://spacy.io/)
 - [Wikipedia package docs](https://wikipedia.readthedocs.io/en/latest/)
+
+
+## Abstract
+
+In order to turn data into action we must know the context of that data.  Traditionally humans were required to provide that context, however recently more and more context is available through data science approaches.  This is achieved through the conversion of text into entities such as nouns like people and places and the verbs that describe their actions.  In this way, we can obtain the nodes representing those nouns along with the verbs representing the relationships or edges between these nouns.  We can further augment these nodes and edges by identifying words like adjectives further describing the nouns or word occurrences that can add additional relationships between nodes.  This approach of named entity recognition can then be used in a variety of problems, such as creating better search engines or recommender systems.
+
+In this workshop, we will start with an open source data set of text and convert it to a knowledge graph.  We will use standard natural language processing (NLP) packages and approaches in Python to clean that text and create a knowledge graph data model within a graph database that can be queried and turned into data insights.  This data model will include the nodes, edges, and attributes identified through the NLP process that can be used to create the necessary ontologies for the graph.  We will experience the problems associated with generating such knowledge graphs, such as entity disambiguation and the lack of sufficient training data (zero-shot learning).  Attendees of this workshop will create and put to use a complete pipeline for knowledge graph generation and analysis.
 
