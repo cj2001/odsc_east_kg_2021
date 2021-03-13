@@ -25,6 +25,7 @@ In addition to cloning this repository, participants in this workshop will need 
 - [Neo4j](https://neo4j.com)
   - [Awesome Procedures on Cypher (APOC)](https://neo4j.com/labs/apoc/)
   - [Cypher Manual](https://neo4j.com/docs/cypher-manual/current/)
+  - [Cypher Reference Card](https://neo4j.com/docs/pdf/neo4j-cypher-refcard-stable.pdf)
   - [Graph Data Science (GDS) Library](https://neo4j.com/developer/graph-data-science/)
   - [Python Driver API Docs](https://neo4j.com/docs/api/python-driver/current/)
 - [spacy Documentation](https://spacy.io/)
