@@ -41,6 +41,6 @@ RETURN gds.util.asNode(nodeId).name as name, embedding
 CALL gds.fastRP.write('all_nodes', 
     { 
         embeddingDimension: 10, 
-        writeProperty: 'fastrp-10'
+        writeProperty: 'fastrp_10'
     } 
 )
