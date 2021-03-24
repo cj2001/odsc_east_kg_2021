@@ -28,4 +28,19 @@ MATCH (n1:Node {name: 'barack obama'})
 MATCH (n2:Node {name: 'mitch mcconnell'}) 
 RETURN gds.alpha.similarity.cosine(n1.word_vec, n2.word_vec) AS similarity
 
+// Create an in-memory graph of all nodes and relationships
+CALL gds.graph.create('all_nodes', 'Node', '*') 
+YIELD graphName, nodeCount, relationshipCount
 
+// Run FastRP on full in-memory graph and output results to screen
+CALL gds.fastRP.stream('all_nodes', {embeddingDimension: 10})
+YIELD nodeId, embedding
+RETURN gds.util.asNode(nodeId).name as name, embedding
+
+// Write FastRP embeddings as a vector to each node
+CALL gds.fastRP.write('all_nodes', 
+    { 
+        embeddingDimension: 10, 
+        writeProperty: 'fastrp-10'
+    } 
+)
