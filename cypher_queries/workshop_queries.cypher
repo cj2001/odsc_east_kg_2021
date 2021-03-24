@@ -22,4 +22,10 @@ MATCH (n:Node)
 WHERE n.name CONTAINS 'obama'
 RETURN DISTINCT n.name
 
+// Get the cosine similarity between two nodes
+
+MATCH (n1:Node {name: 'barack obama'}) 
+MATCH (n2:Node {name: 'mitch mcconnell'}) 
+RETURN gds.alpha.similarity.cosine(n1.word_vec, n2.word_vec) AS similarity
+
 
