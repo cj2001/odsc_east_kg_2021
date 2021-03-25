@@ -5,23 +5,10 @@
 // Delete all nodes and edges in graph
 MATCH (n) DETACH DELETE n
 
-// Update node labels based on node_labels list
-MATCH (n:Node) 
-CALL apoc.create.addLabels(n, n.node_labels) 
-YIELD node 
-RETURN node
-
 // Remove a property from all nodes
 MATCH (n:Node) 
 REMOVE n.property_name 
 RETURN n LIMIT 1
-
-// Check for duplicates
-MATCH (n:Node)
-WITH n.name AS name, n.node_labels AS labels, COLLECT(n) AS nodes
-WHERE SIZE(nodes) > 1
-RETURN [n in nodes | n.name] AS names, [n in nodes | n.node_labels] as labels, SIZE(nodes)
-ORDER BY SIZE(nodes) DESC
 
 //////////////////////////////////
 // WORKSHOP-SPECIFIC QUERIES
@@ -32,11 +19,24 @@ MATCH (n:Node)
 WHERE n.name CONTAINS 'michelle'
 RETURN n.name
 
+// Update node labels based on node_labels list
+MATCH (n:Node) 
+CALL apoc.create.addLabels(n, n.node_labels) 
+YIELD node 
+RETURN node
+
 // How many Obama's are in the graph?
 
 MATCH (n:Node)
 WHERE n.name CONTAINS 'obama'
 RETURN DISTINCT n.name
+
+// Check for duplicates
+MATCH (n:Node)
+WITH n.name AS name, n.node_labels AS labels, COLLECT(n) AS nodes
+WHERE SIZE(nodes) > 1
+RETURN [n in nodes | n.name] AS names, [n in nodes | n.node_labels] as labels, SIZE(nodes)
+ORDER BY SIZE(nodes) DESC
 
 // Get the cosine similarity between two nodes
 
