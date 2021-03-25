@@ -38,6 +38,12 @@ WHERE SIZE(nodes) > 1
 RETURN [n in nodes | n.name] AS names, [n in nodes | n.node_labels] as labels, SIZE(nodes)
 ORDER BY SIZE(nodes) DESC
 
+// Drop duplicates
+MATCH (n:Node) 
+WITH n.name AS name, COLLECT(n) AS nodes 
+WHERE SIZE(nodes)>1 
+FOREACH (el in nodes | DETACH DELETE el)
+
 // Get the cosine similarity between two nodes
 
 MATCH (n1:Node {name: 'barack obama'}) 
