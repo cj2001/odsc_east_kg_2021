@@ -1,4 +1,6 @@
+//////////////////////////////////
 // GENERAL QUERIES
+//////////////////////////////////
 
 // Delete all nodes and edges in graph
 MATCH (n) DETACH DELETE n
@@ -9,7 +11,21 @@ CALL apoc.create.addLabels(n, n.node_labels)
 YIELD node 
 RETURN node
 
-// WORKSHOP QUERIES
+// Remove a property from all nodes
+MATCH (n:Node) 
+REMOVE n.property_name 
+RETURN n LIMIT 1
+
+// Check for duplicates
+MATCH (n:Node)
+WITH n.name AS name, n.node_labels AS labels, COLLECT(n) AS nodes
+WHERE SIZE(nodes) > 1
+RETURN [n in nodes | n.name] AS names, [n in nodes | n.node_labels] as labels, SIZE(nodes)
+ORDER BY SIZE(nodes) DESC
+
+//////////////////////////////////
+// WORKSHOP-SPECIFIC QUERIES
+//////////////////////////////////
 
 // Where is Michelle Obama?
 MATCH (n:Node)
