@@ -10,6 +10,9 @@ MATCH (n:Node)
 REMOVE n.property_name 
 RETURN n LIMIT 1
 
+// Get history of previous commands (default limit: 30)
+CALL db.labels()
+
 //////////////////////////////////
 // WORKSHOP-SPECIFIC QUERIES
 //////////////////////////////////
@@ -56,6 +59,17 @@ MATCH (n1:Node {name: 'barack obama'})
 MATCH (n2:Node) WHERE n2.name CONTAINS 'obama' 
 RETURN n2.name, apoc.text.distance(n1.name, n2.name) AS distance
 
+// Can we figure out the nationality of 'oh bah mə'
+MATCH (n:Node {name: 'oh bah mə'})-[*1..5]->(c:Country) 
+RETURN n, c
+
+// What about all Obamas?
+MATCH (n:Node)-[*1..5]->(p) 
+WHERE n.name CONTAINS 'obama' 
+AND p:Country OR p:AdministrativeArea OR p:Continent OR p:Place 
+RETURN n, p
+
+
 // Create an in-memory graph of all nodes and relationships
 CALL gds.graph.create('all_nodes', 'Node', '*') 
 YIELD graphName, nodeCount, relationshipCount
@@ -68,7 +82,7 @@ RETURN gds.util.asNode(nodeId).name as name, embedding
 // Write FastRP embeddings as a vector to each node
 CALL gds.fastRP.write('all_nodes', 
     { 
-        embeddingDimension: 10, 
-        writeProperty: 'fastrp_10'
+        embeddingDimension: 100, 
+        writeProperty: 'fastrp_100'
     } 
 )
