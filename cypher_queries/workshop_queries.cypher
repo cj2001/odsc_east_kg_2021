@@ -50,6 +50,12 @@ MATCH (n1:Node {name: 'barack obama'})
 MATCH (n2:Node {name: 'mitch mcconnell'}) 
 RETURN gds.alpha.similarity.cosine(n1.word_vec, n2.word_vec) AS similarity
 
+// Compute Levenshtein distance on related nodes
+// (how many characters have to change between n1 and n2)
+MATCH (n1:Node {name: 'barack obama'}) 
+MATCH (n2:Node) WHERE n2.name CONTAINS 'obama' 
+RETURN n2.name, apoc.text.distance(n1.name, n2.name) AS distance
+
 // Create an in-memory graph of all nodes and relationships
 CALL gds.graph.create('all_nodes', 'Node', '*') 
 YIELD graphName, nodeCount, relationshipCount
