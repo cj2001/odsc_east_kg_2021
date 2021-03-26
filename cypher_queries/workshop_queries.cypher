@@ -69,6 +69,34 @@ WHERE n.name CONTAINS 'obama'
 AND p:Country OR p:AdministrativeArea OR p:Continent OR p:Place 
 RETURN n, p
 
+// Create person, place, thing labels
+MATCH (n)
+WHERE ANY (x in n.node_labels WHERE x IN ['Organization', 'EducationalOrganization', 'Corporation', 'SportsTeam', 'SportsOrganization', 'GovernmentOrganization'])
+CALL apoc.create.addLabels(n, ['Person'])
+YIELD node
+RETURN node
+
+MATCH (n)
+WHERE ANY (x in n.node_labels WHERE x IN ['AdministrativeArea', 'Country', 'Museum', 'TouristAttraction', 'CivicStructure', 'City', 'CollegeOrUniversity',
+                'MovieTheater', 'Continent', 'MusicVenue', 'LandmarksOrHistoricalBuildings', 'Cemetery', 'BodyOfWater',
+                'PlaceOfWorship', 'Restaurant', 'LakeBodyOfWater'])
+CALL apoc.create.addLabels(n, ['Place'])
+YIELD node
+RETURN node
+
+MATCH (n)
+WHERE ANY (x in n.node_labels WHERE x IN ['Periodical', 'Book', 'Movie', 'Event', 'MusicComposition', 'SoftwareApplication', 'ProductMode', 'DefenceEstablishment',
+                'MusicRecording', 'LocalBusiness', 'CreativeWork', 'Article', 'TVEpisode', 'ItemList', 'TVSeries', 'Airline',
+                'Product', 'VisualArtwork', 'VideoGame', 'Brand'])
+CALL apoc.create.addLabels(n, ['Thing'])
+YIELD node
+RETURN node
+
+MATCH (n)
+WHERE SIZE(labels(n)) = 1
+CALL apoc.create.addLabels(n, ['Unknown'])
+YIELD node
+RETURN node
 
 // Create an in-memory graph of all nodes and relationships
 CALL gds.graph.create('all_nodes', 'Node', '*') 
