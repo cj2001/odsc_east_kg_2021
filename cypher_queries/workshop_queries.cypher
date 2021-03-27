@@ -60,8 +60,13 @@ MATCH (n2:Node) WHERE n2.name CONTAINS 'obama'
 RETURN n2.name, apoc.text.distance(n1.name, n2.name) AS distance
 
 // Can we figure out the nationality of 'oh bah mə'
-MATCH (n:Node {name: 'oh bah mə'})-[*1..5]->(c:Country) 
-RETURN n, c
+MATCH (n:Node {name: 'oh bah mə'})-[*1..5]->(p) 
+WHERE p:Country OR p:AdministrativeArea OR p:Continent OR p:Place
+RETURN n, p
+
+MATCH (n:Node {name: 'oh bah mə'})-[:be|:bear]->(p) 
+WHERE p:Country OR p:AdministrativeArea OR p:Continent OR p:Place 
+RETURN n, p
 
 // What about all Obamas?
 MATCH (n:Node)-[*1..5]->(p) 
