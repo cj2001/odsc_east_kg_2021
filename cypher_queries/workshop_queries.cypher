@@ -107,6 +107,19 @@ RETURN node
 CALL gds.graph.create('all_nodes', 'Node', '*') 
 YIELD graphName, nodeCount, relationshipCount
 
+// Create an in-memory graph based on PPT-U labels
+CALL gds.graph.create(
+	'pptu_graph',
+    {
+    	Person: {label: 'Person'},
+        Place: {label: 'Place'},
+        Thing: {label: 'Thing'},
+        Unknown: {label: 'Unknown'}
+    },
+    '*'
+)
+YIELD graphName, nodeCount, relationshipCount
+
 // Run FastRP on full in-memory graph and output results to screen
 CALL gds.fastRP.stream('all_nodes', {embeddingDimension: 10})
 YIELD nodeId, embedding
