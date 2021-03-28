@@ -123,10 +123,14 @@ YIELD graphName, nodeCount, relationshipCount
 CALL gds.graph.create(
 	'pptu_graph',
     {
-    	Person: {label: 'Person'},
-        Place: {label: 'Place'},
-        Thing: {label: 'Thing'},
-        Unknown: {label: 'Unknown'}
+    	Person: {label: 'Person',
+                properties: {word_vec_embedding: {property: 'word_vec'}}},
+        Place: {label: 'Place',
+                properties: {word_vec_embedding: {property: 'word_vec'}}},
+        Thing: {label: 'Thing',
+                properties: {word_vec_embedding: {property: 'word_vec'}}},
+        Unknown: {label: 'Unknown',
+                properties: {word_vec_embedding: {property: 'word_vec'}}}
     },
     '*'
 )
