@@ -171,28 +171,28 @@ RETURN gds.util.asNode(nodeId).name as name, embedding
 // Write node2vec embeddings as a vector to each node
 CALL gds.alpha.node2vec.write('all_nodes', 
     { 
-        embeddingDimension: 100, 
+        embeddingDimension: 300, 
         writeProperty: 'n2v_all_nodes'
     } 
 );
 
 CALL gds.alpha.node2vec.write('pptu_graph', 
     { 
-        embeddingDimension: 100, 
+        embeddingDimension: 300, 
         writeProperty: 'n2v_pptu'
     } 
 );
 
 CALL gds.alpha.node2vec.write('all_undir',
     {
-        embeddingDimension: 100,
+        embeddingDimension: 300,
         writeProperty: 'n2v_all_undir'
     }
 );
 
 CALL gds.alpha.node2vec.write('pptu_undir',
     {
-        embeddingDimension: 100,
+        embeddingDimension: 300,
         writeProperty: 'n2v_pptu_undir'
     }
 )
