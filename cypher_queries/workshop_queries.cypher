@@ -102,6 +102,13 @@ AND n.pptu_place IS NULL
 AND n.pptu_thing IS NULL
 SET n.pptu_unknown = 1
 
+// Create new node label 'Unknown' based on .pptu_unknown
+MATCH (n) 
+WHERE n.pptu_unknown IS NOT NULL 
+CALL apoc.create.addLabels(n, ['Unknown']) 
+YIELD node 
+RETURN node
+
 
 // Create an in-memory graph of all nodes and relationships
 CALL gds.graph.create(
