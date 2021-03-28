@@ -119,6 +119,19 @@ CALL gds.graph.create(
 )
 YIELD graphName, nodeCount, relationshipCount
 
+// (OPT) Some algorithms require undirected graphs.  The above would be:
+CALL gds.graph.create(
+	'all_undir',
+    {
+    	AllNodes: {label: 'Node', 
+                   properties: {word_vec_embedding: {property: 'word_vec'}}}
+    },
+	{
+    	AllRels: {type: '*', orientation: 'UNDIRECTED'}
+    }
+)
+YIELD graphName, nodeCount, relationshipCount
+
 // Create an in-memory graph based on PPT-U labels
 CALL gds.graph.create(
 	'pptu_graph',
@@ -146,5 +159,12 @@ CALL gds.alpha.node2vec.write('all_nodes',
     { 
         embeddingDimension: 100, 
         writeProperty: 'n2v_all_nodes'
+    } 
+)
+
+CALL gds.alpha.node2vec.write('pptu_graph', 
+    { 
+        embeddingDimension: 100, 
+        writeProperty: 'n2v_pptu'
     } 
 )
