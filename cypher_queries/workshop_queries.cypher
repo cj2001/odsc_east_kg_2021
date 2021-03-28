@@ -28,6 +28,11 @@ CALL apoc.create.addLabels(n, n.node_labels)
 YIELD node 
 RETURN node
 
+// Drop nodes that have no value for word_vec (not many of them)
+MATCH (n:Node) 
+WHERE n.word_vec IS NULL 
+DETACH DELETE n
+
 // How many Obama's are in the graph?
 
 MATCH (n:Node)
@@ -79,7 +84,7 @@ MATCH (n)
 WHERE ANY (x in n.node_labels WHERE x IN ['Organization', 'EducationalOrganization', 'Corporation', 'SportsTeam', 'SportsOrganization', 'GovernmentOrganization'])
 CALL apoc.create.addLabels(n, ['Person'])
 YIELD node
-RETURN node
+RETURN node;
 
 MATCH (n)
 WHERE ANY (x in n.node_labels WHERE x IN ['AdministrativeArea', 'Country', 'Museum', 'TouristAttraction', 'CivicStructure', 'City', 'CollegeOrUniversity',
@@ -87,7 +92,7 @@ WHERE ANY (x in n.node_labels WHERE x IN ['AdministrativeArea', 'Country', 'Muse
                 'PlaceOfWorship', 'Restaurant', 'LakeBodyOfWater'])
 CALL apoc.create.addLabels(n, ['Place'])
 YIELD node
-RETURN node
+RETURN node;
 
 MATCH (n)
 WHERE ANY (x in n.node_labels WHERE x IN ['Periodical', 'Book', 'Movie', 'Event', 'MusicComposition', 'SoftwareApplication', 'ProductMode', 'DefenceEstablishment',
@@ -95,16 +100,23 @@ WHERE ANY (x in n.node_labels WHERE x IN ['Periodical', 'Book', 'Movie', 'Event'
                 'Product', 'VisualArtwork', 'VideoGame', 'Brand'])
 CALL apoc.create.addLabels(n, ['Thing'])
 YIELD node
-RETURN node
+RETURN node;
 
 MATCH (n)
 WHERE SIZE(labels(n)) = 1
 CALL apoc.create.addLabels(n, ['Unknown'])
 YIELD node
-RETURN node
+RETURN node;
 
 // Create an in-memory graph of all nodes and relationships
-CALL gds.graph.create('all_nodes', 'Node', '*') 
+CALL gds.graph.create(
+	'all_nodes',
+    {
+    	AllNodes: {label: 'Node', 
+                   properties: {word_vec_embedding: {property: 'word_vec'}}}
+    },
+    '*'
+)
 YIELD graphName, nodeCount, relationshipCount
 
 // Create an in-memory graph based on PPT-U labels
@@ -120,15 +132,15 @@ CALL gds.graph.create(
 )
 YIELD graphName, nodeCount, relationshipCount
 
-// Run FastRP on full in-memory graph and output results to screen
-CALL gds.fastRP.stream('all_nodes', {embeddingDimension: 10})
-YIELD nodeId, embedding
+// Run node2vec on full in-memory graph and output results to screen
+CALL gds.alpha.node2vec.stream('all_nodes', {embeddingDimension: 10}) 
+YIELD nodeId, embedding 
 RETURN gds.util.asNode(nodeId).name as name, embedding
 
-// Write FastRP embeddings as a vector to each node
-CALL gds.fastRP.write('all_nodes', 
+// Write node2vec embeddings as a vector to each node
+CALL gds.alpha.node2vec.write('all_nodes', 
     { 
         embeddingDimension: 100, 
-        writeProperty: 'fastrp_100'
+        writeProperty: 'n2v_all_nodes'
     } 
 )
