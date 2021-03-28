@@ -79,34 +79,29 @@ WHERE n.name CONTAINS 'obama'
 AND p:Country OR p:AdministrativeArea OR p:Continent OR p:Place 
 RETURN n, p
 
-// Create person, place, thing labels
-MATCH (n)
-WHERE ANY (x in n.node_labels WHERE x IN ['Organization', 'EducationalOrganization', 'Corporation', 'SportsTeam', 'SportsOrganization', 'GovernmentOrganization'])
-CALL apoc.create.addLabels(n, ['Person'])
-YIELD node
-RETURN node;
+// Create person, place, thing, unknown property
+
+MATCH (n) WHERE ANY (x in n.node_labels WHERE x IN ['Person', 'Organization', 'EducationalOrganization', 'Corporation', 'SportsTeam', 'SportsOrganization', 'GovernmentOrganization']) 
+SET n.pptu_person = 1;
 
 MATCH (n)
-WHERE ANY (x in n.node_labels WHERE x IN ['AdministrativeArea', 'Country', 'Museum', 'TouristAttraction', 'CivicStructure', 'City', 'CollegeOrUniversity',
+WHERE ANY (x in n.node_labels WHERE x IN ['Place', 'AdministrativeArea', 'Country', 'Museum', 'TouristAttraction', 'CivicStructure', 'City', 'CollegeOrUniversity',
                 'MovieTheater', 'Continent', 'MusicVenue', 'LandmarksOrHistoricalBuildings', 'Cemetery', 'BodyOfWater',
                 'PlaceOfWorship', 'Restaurant', 'LakeBodyOfWater'])
-CALL apoc.create.addLabels(n, ['Place'])
-YIELD node
-RETURN node;
+SET n.pptu_place = 1;
 
 MATCH (n)
-WHERE ANY (x in n.node_labels WHERE x IN ['Periodical', 'Book', 'Movie', 'Event', 'MusicComposition', 'SoftwareApplication', 'ProductMode', 'DefenceEstablishment',
+WHERE ANY (x in n.node_labels WHERE x IN ['Thing', 'Periodical', 'Book', 'Movie', 'Event', 'MusicComposition', 'SoftwareApplication', 'ProductMode', 'DefenceEstablishment',
                 'MusicRecording', 'LocalBusiness', 'CreativeWork', 'Article', 'TVEpisode', 'ItemList', 'TVSeries', 'Airline',
                 'Product', 'VisualArtwork', 'VideoGame', 'Brand'])
-CALL apoc.create.addLabels(n, ['Thing'])
-YIELD node
-RETURN node;
+SET n.pptu_thing = 1;
 
 MATCH (n)
-WHERE SIZE(labels(n)) = 1
-CALL apoc.create.addLabels(n, ['Unknown'])
-YIELD node
-RETURN node;
+WHERE n.pptu_person IS NULL
+AND n.pptu_place IS NULL
+AND n.pptu_thing IS NULL
+SET n.pptu_unknown = 1
+
 
 // Create an in-memory graph of all nodes and relationships
 CALL gds.graph.create(
@@ -149,6 +144,25 @@ CALL gds.graph.create(
 )
 YIELD graphName, nodeCount, relationshipCount
 
+// (OPT) Some algorithms require undirected graphs.  The above would be:
+CALL gds.graph.create(
+	'pptu_undir',
+    {
+    	Person: {label: 'Person',
+                properties: {word_vec_embedding: {property: 'word_vec'}}},
+        Place: {label: 'Place',
+                properties: {word_vec_embedding: {property: 'word_vec'}}},
+        Thing: {label: 'Thing',
+                properties: {word_vec_embedding: {property: 'word_vec'}}},
+        Unknown: {label: 'Unknown',
+                properties: {word_vec_embedding: {property: 'word_vec'}}}
+    },
+	{
+    	AllRels: {type: '*', orientation: 'UNDIRECTED'}
+    }
+)
+YIELD graphName, nodeCount, relationshipCount
+
 // Run node2vec on full in-memory graph and output results to screen
 CALL gds.alpha.node2vec.stream('all_nodes', {embeddingDimension: 10}) 
 YIELD nodeId, embedding 
@@ -160,11 +174,25 @@ CALL gds.alpha.node2vec.write('all_nodes',
         embeddingDimension: 100, 
         writeProperty: 'n2v_all_nodes'
     } 
-)
+);
 
 CALL gds.alpha.node2vec.write('pptu_graph', 
     { 
         embeddingDimension: 100, 
         writeProperty: 'n2v_pptu'
     } 
+);
+
+CALL gds.alpha.node2vec.write('all_undir',
+    {
+        embeddingDimension: 100,
+        writeProperty: 'n2v_all_undir'
+    }
+);
+
+CALL gds.alpha.node2vec.write('pptu_undir',
+    {
+        embeddingDimension: 100,
+        writeProperty: 'n2v_pptu_undir'
+    }
 )
