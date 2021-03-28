@@ -28,13 +28,7 @@ CALL apoc.create.addLabels(n, n.node_labels)
 YIELD node 
 RETURN node
 
-// Drop nodes that have no value for word_vec (not many of them)
-MATCH (n:Node) 
-WHERE n.word_vec IS NULL 
-DETACH DELETE n
-
 // How many Obama's are in the graph?
-
 MATCH (n:Node)
 WHERE n.name CONTAINS 'obama'
 RETURN DISTINCT n.name
@@ -51,6 +45,11 @@ MATCH (n:Node)
 WITH n.name AS name, COLLECT(n) AS nodes 
 WHERE SIZE(nodes)>1 
 FOREACH (el in nodes | DETACH DELETE el)
+
+// Drop nodes that have no value for word_vec (not many of them)
+MATCH (n:Node) 
+WHERE n.word_vec IS NULL 
+DETACH DELETE n
 
 // Get the cosine similarity between two nodes
 
@@ -100,7 +99,7 @@ MATCH (n)
 WHERE n.pptu_person IS NULL
 AND n.pptu_place IS NULL
 AND n.pptu_thing IS NULL
-SET n.pptu_unknown = 1
+SET n.pptu_unknown = 1;
 
 // Create new node label 'Unknown' based on .pptu_unknown
 MATCH (n) 
@@ -169,6 +168,12 @@ CALL gds.graph.create(
     }
 )
 YIELD graphName, nodeCount, relationshipCount
+
+// (OPT) In case you need to drop all graphs...
+CALL gds.graph.drop('all_nodes');
+CALL gds.graph.drop('all_undir');
+CALL gds.graph.drop('pptu_graph');
+CALL gds.graph.drop('pptu_undir');
 
 // Run node2vec on full in-memory graph and output results to screen
 CALL gds.alpha.node2vec.stream('all_nodes', {embeddingDimension: 10}) 
