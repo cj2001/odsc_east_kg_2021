@@ -4,7 +4,7 @@
 #### email: clair.sullivan@neo4j.com
 #### Twitter: @CJLovesData1
 
-This repository contains all of the software you will need to follow along with this workshop (see abstract below).  It is mostly contained within the Docker container to ensure reproducibility among a variety of operating systems and environments.  
+This repository contains all of the software you will need to follow along with this workshop (see abstract below).  It is mostly contained within the Docker container to ensure reproducibility among a variety of operating systems and environments. The slides are also available in the top-level directory of this repository. 
 
 ## Downloadable prerequisites
 
