@@ -6,6 +6,12 @@
 
 This repository contains all of the software you will need to follow along with this workshop (see abstract below).  It is mostly contained within the Docker container to ensure reproducibility among a variety of operating systems and environments. The slides are also available in the top-level directory of this repository. 
 
+## Updates since workshop!
+
+- Should you be interested in using the data from the workshop without having to query the Google Knowledge Graph or Wikipedia, you will find the raw data files in `/data`.
+
+- Watch for a Twitch stream (live) and YouTube video (live and stored) coming soon!
+
 ## Downloadable prerequisites
 
 In addition to cloning this repository, participants in this workshop will need to download the following:
@@ -22,6 +28,7 @@ In addition to cloning this repository, participants in this workshop will need 
 - [Docker for Data Science -- A Step by Step Guide](https://towardsdatascience.com/docker-for-data-science-a-step-by-step-guide-1e5f7f3baf8e)
 - [Google Knowledge Graph Search API](https://wikipedia.readthedocs.io/en/latest/)
   - [How to Create a Google Knowledge Graph Search API Key](https://developers.google.com/knowledge-graph/prereqs)
+  - [Knowledge Graph Search API Authorize Requests](https://developers.google.com/knowledge-graph/how-tos/authorizing)
 - [Neo4j](https://neo4j.com)
   - [Awesome Procedures on Cypher (APOC)](https://neo4j.com/labs/apoc/)
   - [Cypher Manual](https://neo4j.com/docs/cypher-manual/current/)
