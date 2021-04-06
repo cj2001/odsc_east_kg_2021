@@ -22,6 +22,7 @@ In addition to cloning this repository, participants in this workshop will need 
 - [Docker for Data Science -- A Step by Step Guide](https://towardsdatascience.com/docker-for-data-science-a-step-by-step-guide-1e5f7f3baf8e)
 - [Google Knowledge Graph Search API](https://wikipedia.readthedocs.io/en/latest/)
   - [How to Create a Google Knowledge Graph Search API Key](https://developers.google.com/knowledge-graph/prereqs)
+  - [Knowledge Graph Search API Authorize Requests](https://developers.google.com/knowledge-graph/how-tos/authorizing)
 - [Neo4j](https://neo4j.com)
   - [Awesome Procedures on Cypher (APOC)](https://neo4j.com/labs/apoc/)
   - [Cypher Manual](https://neo4j.com/docs/cypher-manual/current/)
