@@ -8,6 +8,8 @@ This repository contains all of the software you will need to follow along with 
 
 ## Updates since workshop!
 
+- This repository was last updated on 2021-05-10.  Be sure to pull the latest version!
+
 - Should you be interested in using the data from the workshop without having to query the Google Knowledge Graph or Wikipedia, you will find the raw data files in `/data`.
 
 - Watch for a Twitch stream (live) and YouTube video (live and stored) coming soon!
